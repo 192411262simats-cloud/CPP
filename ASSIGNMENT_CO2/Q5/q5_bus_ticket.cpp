@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+
+class BusTicket {
+private:
+    static int issued;
+    static const int CAPACITY = 3;
+
+    int seat;
+    std::string name;
+
+public:
+    explicit BusTicket(const std::string& passengerName)
+        : seat(0), name(passengerName) {
+        if (issued < CAPACITY) {
+            ++issued;
+            seat = issued;
+        }
+    }
+
+    static int count() {
+        return issued;
+    }
+
+    void print() const {
+        std::cout << name << ": "
+                  << (seat ? "Seat " + std::to_string(seat)
+                           : std::string("Waiting"))
+                  << '\n';
+    }
+};
+
+int BusTicket::issued = 0;
+
+int main() {
+    BusTicket trip[4] = {
+        BusTicket("Asha"),
+        BusTicket("Bala"),
+        BusTicket("Chitra"),
+        BusTicket("Dev")
+    };
+
+    for (const BusTicket& ticket : trip) {
+        ticket.print();
+    }
+
+    std::cout << "Issued: " << BusTicket::count() << '\n';
+    return 0;
+}
